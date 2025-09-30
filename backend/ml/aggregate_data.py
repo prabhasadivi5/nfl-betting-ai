@@ -44,7 +44,7 @@ def parse_play(outcome):
     return 0, "other", 0
 
 
-#load up the data
+# ------------ Load Data ----------------
 def load_data(play_files):
     df = pd.concat([pd.read_csv(f) for f in play_files], ignore_index=True)
     print(f"Loaded plays: {df.shape}")
@@ -55,7 +55,8 @@ def load_data(play_files):
     )
     return df
 
-#try to aggregate the stats here 
+
+# ------------ Aggregate Per-Game Stats ----------------
 def aggregate_team_stats(df):
     grouped = df.groupby(["Season", "Week", "HomeTeam", "AwayTeam", "TeamWithPossession"])
 
@@ -83,7 +84,7 @@ def aggregate_team_stats(df):
     return stats
 
 
-#defensive stats here 
+# ------------ Defensive Stats ----------------
 def add_defensive_stats(stats):
     stats["Opponent"] = stats.apply(
         lambda row: row["HomeTeam"] if row["TeamWithPossession"] == row["AwayTeam"] else row["AwayTeam"],
@@ -101,7 +102,7 @@ def add_defensive_stats(stats):
     # Build a lookup of each game’s teams and points
     game_points = stats[["game_id", "TeamWithPossession", "points"]]
 
-    # Merge opponents points from same game
+    # Merge opponent points from same game
     merged = stats.merge(
         game_points,
         left_on=["game_id", "Opponent"],
@@ -123,7 +124,7 @@ def add_defensive_stats(stats):
     return merged
 
 
-#recent form from the last 3 games
+# ------------ Recent Form (last n games) ----------------
 def add_recent_form(df, n=3):
     df = df.sort_values(by=["TeamWithPossession", "Season", "Week"])
     rolling_cols = [
@@ -141,7 +142,23 @@ def add_recent_form(df, n=3):
     return df
 
 
-#main method to do the work 
+# ------------ Season Averages (up to that week) ----------------
+def add_season_form(df):
+    season_cols = [
+        "pass_yards", "rush_yards", "total_yards",
+        "yards_per_play", "points_per_possession",
+        "turnovers", "scoring_efficiency",
+        "points", "points_allowed"
+    ]
+    
+    for col in season_cols:
+        df[f"{col}_season_avg"] = df.groupby(["Season", "TeamWithPossession"])[col].transform(
+            lambda x: x.expanding().mean()
+        )
+    return df
+
+
+# ------------ Main ----------------
 if __name__ == "__main__":
     # Grab all *_plays.csv files
     play_files = glob.glob("../data/*_plays.csv")
@@ -159,5 +176,9 @@ if __name__ == "__main__":
     # Add rolling last-3-game averages
     final_df = add_recent_form(full_stats, n=3)
 
+    # Add season averages
+    final_df = add_season_form(final_df)
+
     # Save clean dataset
     final_df.to_csv("../data/nfl_training.csv", index=False)
+    print("Saved dataset with per-game, last3, and season averages.")
