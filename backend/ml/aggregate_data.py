@@ -44,7 +44,7 @@ def parse_play(outcome):
     return 0, "other", 0
 
 
-# ------------ Load Data ----------------
+#data loading 
 def load_data(play_files):
     df = pd.concat([pd.read_csv(f) for f in play_files], ignore_index=True)
     print(f"Loaded plays: {df.shape}")
@@ -56,7 +56,7 @@ def load_data(play_files):
     return df
 
 
-# ------------ Aggregate Per-Game Stats ----------------
+#offense stats
 def aggregate_team_stats(df):
     grouped = df.groupby(["Season", "Week", "HomeTeam", "AwayTeam", "TeamWithPossession"])
 
@@ -84,7 +84,7 @@ def aggregate_team_stats(df):
     return stats
 
 
-# ------------ Defensive Stats ----------------
+#stats on defense
 def add_defensive_stats(stats):
     stats["Opponent"] = stats.apply(
         lambda row: row["HomeTeam"] if row["TeamWithPossession"] == row["AwayTeam"] else row["AwayTeam"],
@@ -124,7 +124,7 @@ def add_defensive_stats(stats):
     return merged
 
 
-# ------------ Recent Form (last n games) ----------------
+#last n games (3)
 def add_recent_form(df, n=3):
     df = df.sort_values(by=["TeamWithPossession", "Season", "Week"])
     rolling_cols = [
@@ -142,7 +142,7 @@ def add_recent_form(df, n=3):
     return df
 
 
-# ------------ Season Averages (up to that week) ----------------
+#season averages calc stats
 def add_season_form(df):
     season_cols = [
         "pass_yards", "rush_yards", "total_yards",
@@ -158,7 +158,7 @@ def add_season_form(df):
     return df
 
 
-# ------------ Main ----------------
+#main mnethod
 if __name__ == "__main__":
     # Grab all *_plays.csv files
     play_files = glob.glob("../data/*_plays.csv")

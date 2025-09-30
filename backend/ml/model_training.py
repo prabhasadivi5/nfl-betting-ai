@@ -4,10 +4,10 @@ from sklearn.metrics import mean_absolute_error, r2_score
 from xgboost import XGBRegressor
 import joblib
 
-# --- Load Data ---
+#data loading
 df = pd.read_csv("../data/nfl_training.csv")
 
-# --- Build Game-Level Matchups ---
+#matchup building
 def build_matchup_data(df):
     games = []
     for gid, g in df.groupby("game_id"):
@@ -36,15 +36,15 @@ games = build_matchup_data(df)
 print("Matchup data shape:", games.shape)
 print(games.head(3))
 
-# --- Features & Targets ---
+#features + targets
 feature_cols = [c for c in games.columns if c.startswith("off_") or c.startswith("def_")]
 X = games[feature_cols]
 y = games[["points_teamA", "points_teamB", "game_total"]]
 
-# --- Train/Test Split ---
+#taking train and test data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# --- Model Constructor (with eval_metric + early_stopping) ---
+#creating the model 
 base_model = XGBRegressor(
     n_estimators=800,
     learning_rate=0.03,
@@ -55,8 +55,8 @@ base_model = XGBRegressor(
     reg_lambda=2,
     random_state=42,
     n_jobs=-1,
-    eval_metric="mae",               # ✅ moved here
-    early_stopping_rounds=50         # ✅ moved here
+    eval_metric="mae",              
+    early_stopping_rounds=50         
 )
 
 # Train separately for each target
@@ -75,5 +75,3 @@ for target in y.columns:
     results[target] = (mae, r2)
     print(f"{target}: MAE={mae:.3f}, R²={r2:.3f}")
     joblib.dump(model, f"{target}_xgb_model.pkl")
-
-print("\n✅ Models saved: points_teamA_xgb_model.pkl, points_teamB_xgb_model.pkl, game_total_xgb_model.pkl")
