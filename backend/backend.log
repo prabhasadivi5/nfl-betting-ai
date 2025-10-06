@@ -1,0 +1,12 @@
+ * Serving Flask app 'app'
+ * Debug mode: on
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://10.192.8.83:5001
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 139-594-453
+127.0.0.1 - - [05/Oct/2025 20:29:03] "OPTIONS /api/predict HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2025 20:29:04] "[35m[1mPOST /api/predict HTTP/1.1[0m" 500 -
