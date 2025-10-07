@@ -2,11 +2,13 @@
 
 AI-powered NFL betting assistant that predicts game scores using machine learning and compares predictions against Vegas odds to identify betting value.
 
-## 🚀 AWS Hosting Preparation
+## AWS Hosting Preparation
 
 Preparing for AWS deployment with EC2 for hosting, automated cron jobs for daily data updates and weekly odds fetching, and S3 for model/data backups. Currently building and testing the ML pipeline locally.
 
-**Note**: AI API expired. New API integration coming soon.
+**Note**: AI API expired. New API integration coming soon. Both the Hosting and updated AI API are expected by Mid October
+
+
 
 ---
 
@@ -112,8 +114,3 @@ The Odds API → odds_fetcher.py → cache/nfl_odds.json → score_predictor.py 
 
 **Model not found**: Run `python training_script.py` first
 
----
-
-## ⚠️ Disclaimer
-
-Educational purposes only. Gamble responsibly.
