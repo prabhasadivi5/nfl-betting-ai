@@ -4,7 +4,7 @@ AI-powered NFL betting assistant that predicts game scores using machine learnin
 
 ## AWS Hosting Preparation
 
-Preparing for AWS deployment with EC2 for hosting, automated cron jobs for daily data updates and weekly odds fetching, and S3 for model/data backups. Currently building and testing the ML pipeline locally.
+Preparing for AWS deployment with EC2 for hosting, automated cron jobs for daily data updates and weekly odds fetching, and S3 for model/data backups. Main Priority is to set this up
 
 **Note**: AI API expired. New API integration coming soon. Both the Hosting and updated AI API are expected by Mid October
 
