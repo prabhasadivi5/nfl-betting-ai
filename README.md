@@ -12,7 +12,7 @@ Preparing for AWS deployment with EC2 for hosting, automated cron jobs for daily
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 backend/ml/
@@ -29,7 +29,7 @@ backend/ml/
 
 ---
 
-## 📄 Core Files
+## Core Files
 
 ### **`nfl_tank_aggregator.py`**
 Fetches completed games from Tank01 API, parses play-by-play data, generates game-by-game stats with rolling 3-game averages (`_last3`) and season averages (`_season_avg`). Outputs `nfl_training.csv` with 2 rows per game.
@@ -65,7 +65,7 @@ Trains XGBoost models on `nfl_training.csv`. Outputs three models: `points_teamA
 
 ---
 
-## 🔧 Setup
+## Setup
 
 ```bash
 # Install dependencies
@@ -84,7 +84,7 @@ python score_predictor.py WSH DAL      # Test prediction
 
 ---
 
-## 🤖 Automation (Cron)
+## Automation (Cron)
 
 ```bash
 # Daily: Update game data at 3 AM
@@ -96,7 +96,7 @@ python score_predictor.py WSH DAL      # Test prediction
 
 ---
 
-## 📊 Data Flow
+## Data Flow
 
 ```
 Tank01 API → nfl_tank_aggregator.py → nfl_training.csv → training_script.py → *.pkl models
@@ -106,7 +106,7 @@ The Odds API → odds_fetcher.py → cache/nfl_odds.json → score_predictor.py 
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 **"No data found for team"**: Add team to `TEAM_MAPPINGS` in `score_predictor.py`
 
