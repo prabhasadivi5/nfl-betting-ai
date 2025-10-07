@@ -106,11 +106,5 @@ The Odds API → odds_fetcher.py → cache/nfl_odds.json → score_predictor.py 
 
 ---
 
-## Troubleshooting
-
-**"No data found for team"**: Add team to `TEAM_MAPPINGS` in `score_predictor.py`
-
-**"No odds data available"**: Run `python odds_fetcher.py --update`
-
-**Model not found**: Run `python training_script.py` first
+## Frontend Explanations Will be Added Soon
 
